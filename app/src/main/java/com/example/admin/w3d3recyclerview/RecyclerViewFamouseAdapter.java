@@ -1,6 +1,6 @@
 package com.example.admin.w3d3recyclerview;
 
-import android.media.Image;
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -8,6 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.google.gson.Gson;
 
 import java.util.List;
 
@@ -19,15 +21,17 @@ public class RecyclerViewFamouseAdapter extends RecyclerView.Adapter<RecyclerVie
 
 
     List<Famous> famouses;
+    Context context;
 
     public RecyclerViewFamouseAdapter(List<Famous> famouses) {
-    this.famouses = famouses;
+        this.famouses = famouses;
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        context = parent.getContext();
 
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_card_view,parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_card_view, parent, false);
 
         ViewHolder viewHolder = new ViewHolder(view);
 
@@ -52,6 +56,11 @@ public class RecyclerViewFamouseAdapter extends RecyclerView.Adapter<RecyclerVie
     public void remove(int position) {
         famouses.remove(position);
         notifyItemRemoved(position);
+
+        String json = new Gson().toJson(famouses);
+        DatabaseHelper databaseHelper = new DatabaseHelper(context, json);
+        databaseHelper.insertDB(json);
+
         Log.d("TAG", "remove: " + famouses.size());
     }
 

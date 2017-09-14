@@ -13,24 +13,25 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
 
 import com.facebook.stetho.Stetho;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.R.id.list;
+
 public class MainActivity extends AppCompatActivity {
 
     RecyclerView famousRecyclerView;
-    List<Famous> famousData;
+    ArrayList<Famous> famousData;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Stetho.initializeWithDefaults(this);
 
-        DatabaseHelper databaseHelper = new DatabaseHelper(this);
-        databaseHelper.testRecord();
 
-        famousData = new ArrayList<>();
+        /*famousData = new ArrayList<>();
         famousData.add(new Famous("CHARLIZE THERON", "Date of Birth: August 7, 1975 | Birth Place: Benoni, South Africa", R.drawable.charlize));
         famousData.add(new Famous("ANNA KENDRICK", "Date of Birth: August 9, 1985 | Birth Place: Portland, ME", R.drawable.annakendrick164008421));
         famousData.add(new Famous("CHANNING TATUM", "Date of Birth: April 26, 1980 | Birth Place: Cullman, AL", R.drawable.channing162613136));
@@ -45,8 +46,13 @@ public class MainActivity extends AppCompatActivity {
         famousData.add(new Famous("SCARLETT JOHANSSON", "Date of Birth: November 22, 1984 | Birth Place: New York, NY", R.drawable.scarlett159652076));
         famousData.add(new Famous("EMMA STONE", "Date of Birth: November 6, 1988  | Birth Place:Scottsdale, Arizona, U.S.", R.drawable.stone159231705));
         famousData.add(new Famous("WILL SMITH", "Date of Birth: September 25, 1968 | Birth Place: Philadelphia, PA", R.drawable.willsmith169638915));
+*/
 
-        //String json = new Gson().toJson(famousData);
+//        String json = new Gson().toJson(famousData);
+        DatabaseHelper databaseHelper = new DatabaseHelper(this, "");
+        databaseHelper.loadData();
+        //databaseHelper.insertDB(json);
+        famousData = databaseHelper.getFamousData();
 
         setUpRecyclerView();
 
